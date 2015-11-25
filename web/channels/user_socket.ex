@@ -2,7 +2,7 @@ defmodule Gastronokids.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "rooms:*", Gastronokids.RoomChannel
+  channel "rooms:*", Gastronokids.RoomChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket
