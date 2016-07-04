@@ -21,8 +21,9 @@ defmodule Gastronokids.ConnCase do
       use Phoenix.ConnTest
 
       alias Gastronokids.Repo
-      import Ecto.Model
-      import Ecto.Query, only: [from: 2]
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
 
       import Gastronokids.Router.Helpers
 
@@ -32,10 +33,12 @@ defmodule Gastronokids.ConnCase do
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(Gastronokids.Repo)
+
     unless tags[:async] do
-      Ecto.Adapters.SQL.restart_test_transaction(Gastronokids.Repo, [])
+      Ecto.Adapters.SQL.Sandbox.mode(Gastronokids.Repo, {:shared, self()})
     end
 
-    :ok
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

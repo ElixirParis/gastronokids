@@ -11,6 +11,9 @@ config :logger, level: :warn
 
 # Configure your database
 config :gastronokids, Gastronokids.Repo,
-  adapter: Sqlite.Ecto,
-  database: "db/gastronokids_test.sqlite",
+  adapter: Ecto.Adapters.Postgres,
+  username: "phoenix",
+  password: "passw0rd",
+  database: "gastronokids_test",
+  hostname: "localhost",
   pool: Ecto.Adapters.SQL.Sandbox

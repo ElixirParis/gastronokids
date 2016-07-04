@@ -1,11 +1,25 @@
 # Gastronokids
 
+# Database configuration
+
+As default, application runs with Postgres database:
+
+You can create user and grant database creation rights as follow:
+
+```
+$ psql postgres
+# CREATE USER phoenix WITH PASSWORD 'passw0rd';
+# ALTER USER phoenix CREATEDB;
+```
+
+# Phoenix application
+
 To start your Phoenix app:
 
-  1. Install dependencies with `mix deps.get`
-  2. Install Node modules with `npm install`
-  2. Create and migrate your database with `mix ecto.create && mix ecto.migrate`
-  3. Start Phoenix endpoint with `mix phoenix.server`
+  * Install dependencies with `mix deps.get`
+  * Create and migrate your database with `mix ecto.create && mix ecto.migrate`
+  * Install Node.js dependencies with `npm install`
+  * Start Phoenix endpoint with `mix phoenix.server`
 
 Now you can visit [`localhost:4000/posts`](http://localhost:4000/posts) from your browser.
 

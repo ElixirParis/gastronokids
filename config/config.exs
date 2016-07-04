@@ -5,12 +5,15 @@
 # is restricted to this project.
 use Mix.Config
 
+# General application configuration
+config :gastronokids,
+  ecto_repos: [Gastronokids.Repo]
+
 # Configures the endpoint
 config :gastronokids, Gastronokids.Endpoint,
   url: [host: "localhost"],
-  root: Path.dirname(__DIR__),
   secret_key_base: "j458rtSt4qQnUmBDEVmjX3X6tCtLLjWJy6rhO58WO86s1S2I3i4zePgdcV/T3N41",
-  render_errors: [accepts: ~w(html json)],
+  render_errors: [view: Gastronokids.ErrorView, accepts: ~w(html json)],
   pubsub: [name: Gastronokids.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
@@ -22,8 +25,3 @@ config :logger, :console,
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env}.exs"
-
-# Configure phoenix generators
-config :phoenix, :generators,
-  migration: true,
-  binary_id: false

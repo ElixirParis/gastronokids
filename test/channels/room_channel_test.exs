@@ -16,9 +16,9 @@ defmodule Gastronokids.RoomChannelTest do
     assert_reply ref, :ok, %{"hello" => "there"}
   end
 
-  test "shout broadcasts to rooms:lobby", %{socket: socket} do
-    push socket, "shout", %{"hello" => "all"}
-    assert_broadcast "shout", %{"hello" => "all"}
+  test "send new_msg", %{socket: socket} do
+    push socket, "new_msg", %{"body" => "hello"}
+    assert_broadcast "new_msg", %{"body" => "hello"}
   end
 
   test "broadcasts are pushed to the client", %{socket: socket} do

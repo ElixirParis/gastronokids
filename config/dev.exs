@@ -10,15 +10,17 @@ config :gastronokids, Gastronokids.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
-  cache_static_lookup: false,
   check_origin: false,
-  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin"]]
+  watchers: [node: ["node_modules/brunch/bin/brunch", "watch", "--stdin",
+                    cd: Path.expand("../", __DIR__)]]
+
 
 # Watch static and templates for browser reloading.
 config :gastronokids, Gastronokids.Endpoint,
   live_reload: [
     patterns: [
       ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
+      ~r{priv/gettext/.*(po)$},
       ~r{web/views/.*(ex)$},
       ~r{web/templates/.*(eex)$}
     ]
@@ -27,13 +29,15 @@ config :gastronokids, Gastronokids.Endpoint,
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
-# Set a higher stacktrace during development.
-# Do not configure such in production as keeping
-# and calculating stacktraces is usually expensive.
+# Set a higher stacktrace during development. Avoid configuring such
+# in production as building large stacktraces may be expensive.
 config :phoenix, :stacktrace_depth, 20
 
 # Configure your database
 config :gastronokids, Gastronokids.Repo,
-  adapter: Sqlite.Ecto,
-  database: "db/gastronokids_dev.sqlite",
+  adapter: Ecto.Adapters.Postgres,
+  username: "phoenix",
+  password: "passw0rd",
+  database: "gastronokids_dev",
+  hostname: "localhost",
   pool_size: 10

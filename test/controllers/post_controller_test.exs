@@ -5,11 +5,6 @@ defmodule Gastronokids.PostControllerTest do
   @valid_attrs %{address: "some content", body: "some content", name: "some content"}
   @invalid_attrs %{}
 
-  setup do
-    conn = conn()
-    {:ok, conn: conn}
-  end
-
   test "lists all entries on index", %{conn: conn} do
     conn = get conn, post_path(conn, :index)
     assert html_response(conn, 200) =~ "Listing posts"
@@ -38,7 +33,7 @@ defmodule Gastronokids.PostControllerTest do
   end
 
   test "renders page not found when id is nonexistent", %{conn: conn} do
-    assert_raise Ecto.NoResultsError, fn ->
+    assert_error_sent 404, fn ->
       get conn, post_path(conn, :show, -1)
     end
   end
