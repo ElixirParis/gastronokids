@@ -25,10 +25,19 @@
 
       <%= render @view_module, @view_template, assigns %>
 
+      <hr/>
+
+      <p>Online Users:</p>
+      <ul id="user-list"></ul>
+
     <div class="chat">
      <div id="messages"></div>
      <input id="chat-input" type="text"></input>
     </div>
+
+    <script>
+     window.userId = "<%= if @conn.params["name"], do: @conn.params["name"], else: "Anonymous" %>"
+    </script>
 
     </div> <!-- /container -->
     <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>

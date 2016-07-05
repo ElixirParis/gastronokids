@@ -3,9 +3,9 @@
 
 // To use Phoenix channels, the first step is to import Socket
 // and connect at the socket path in "lib/my_app/endpoint.ex":
-import {Socket} from "deps/phoenix/web/static/js/phoenix"
+import {Socket, Presence} from "phoenix"
 
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+let socket = new Socket("/socket", {params: {token: window.userToken, user_id: window.userId}})
 
 // When you connect, you'll often need to authenticate the client.
 // For example, imagine you have an authentication plug, `MyAuth`,
@@ -53,24 +53,49 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 
 socket.connect()
 
-
 let channel           = socket.channel("rooms:lobby", {})
+let presences         = {}
 let chatInput         = $("#chat-input")
 let messagesContainer = $("#messages")
+let userList          = $("#user-list")
 
 chatInput.on("keypress", event => {
   if(event.keyCode === 13){
-    channel.push("new_msg", {body: chatInput.val()})
-    chatInput.val("")
+      channel.push("new_msg", {body: chatInput.val()})
+      chatInput.val("")
   }
 })
 
+let listBy = (id, {metas: [first, ...rest]}) => {
+    first.name = id
+    first.count = rest.length +1
+    return first
+}
+let render = (presences) => {
+    let onlineUsers = Presence.list(presences, listBy)
+    let htmlList = onlineUsers
+        .map(user => `<li>${user.name} (${user.count})</li>`)
+        .join("")
+    userList.html(htmlList)
+}
+
+channel.on("presence_state", state => {
+    presences = Presence.syncState(presences, state)
+    render(presences)
+})
+
+channel.on("presence_diff", diff => {
+    presences = Presence.syncDiff(presences, diff)
+    render(presences)
+})
+
 channel.on("new_msg", payload => {
-  messagesContainer.append(`<br/>[${Date()}] ${payload.body}`)
+    var now = new Date();
+    messagesContainer.append(`<br/>[${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}] ${payload.user}> ${payload.body}`)
 })
 
 channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+    .receive("ok", resp => { console.log("Joined successfully", resp) })
+    .receive("error", resp => { console.log("Unable to join", resp) })
 
 export default socket

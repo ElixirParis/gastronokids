@@ -14,6 +14,7 @@ config :gastronokids, Gastronokids.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "j458rtSt4qQnUmBDEVmjX3X6tCtLLjWJy6rhO58WO86s1S2I3i4zePgdcV/T3N41",
   render_errors: [view: Gastronokids.ErrorView, accepts: ~w(html json)],
+  # This is mapping between name and pubsub backend
   pubsub: [name: Gastronokids.PubSub,
            adapter: Phoenix.PubSub.PG2]
 
